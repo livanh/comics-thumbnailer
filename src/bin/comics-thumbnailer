@@ -1,0 +1,41 @@
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+
+function gtk_find_icon() {
+	python -c "import gtk; print gtk.icon_theme_get_default().lookup_icon(\"$1\",$2,0).get_filename()"
+}
+
+if [ -z "$1" ]; then exit 0; fi
+INFILE="$1"
+OUTFILE="$2"
+SIZE="$3"
+TMP_DIR=$(mktemp -d /tmp/.comics-thumbnailer-XXXXXX)
+
+EXTENSION=${INFILE##*.}
+
+case $EXTENSION in
+    cbr) COVER_FILE="$( rar lb "${INFILE}" | egrep -i "\.jpe?g" | sort | head -1 )"
+	 rar e "${INFILE}" "*${COVER_FILE}" "${TMP_DIR}";;
+    cbz) COVER_FILE="$( unzip -l "${INFILE}" | egrep -i "\.jpe?g" | cut -c 31- | sort | head -1)"
+	 unzip "${INFILE}" "${COVER_FILE}" -d "${TMP_DIR}";;
+esac
+
+case $(echo $SIZE | cut -d x -f 1 ) in
+  256)	ICON_SIZE=128;;
+  192)	ICON_SIZE=96;;
+  128)	ICON_SIZE=64;;
+   96)	ICON_SIZE=48;;
+   72)	ICON_SIZE=36;;
+   64)	ICON_SIZE=32;;
+   48)	ICON_SIZE=24;;
+    *)	ICON_SIZE=16;;
+esac
+
+if [ -f "${TMP_DIR}/${COVER_FILE}" ]; then
+	ICON_FILE="$(gtk_find_icon application-x-${EXTENSION} ${ICON_SIZE})"
+	echo $ICON_FILE
+	convert "${TMP_DIR}/${COVER_FILE}" -resize "${SIZE}" "${ICON_FILE}" -gravity SouthEast -composite "${OUTFILE}"
+fi
+
+rm -R "$TMP_DIR"

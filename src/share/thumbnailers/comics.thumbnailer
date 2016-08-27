@@ -1,0 +1,4 @@
+[Thumbnailer Entry]
+TryExec=comics-thumbnailer
+Exec=comics-thumbnailer %i %o %s
+MimeType=application/x-cbr;application/x-cbz;
