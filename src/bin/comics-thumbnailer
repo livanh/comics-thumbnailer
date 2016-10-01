@@ -17,7 +17,7 @@ EXTENSION=${INFILE##*.}
 case $EXTENSION in
     cbr) COVER_FILE="$( rar lb "${INFILE}" | egrep -i "\.jpe?g" | sort | head -1 )"
 	 rar e "${INFILE}" "*${COVER_FILE}" "${TMP_DIR}";;
-    cbz) COVER_FILE="$( unzip -l "${INFILE}" | egrep -i "\.jpe?g" | cut -c 31- | sort | head -1)"
+    cbz) COVER_FILE="$( unzip -l "${INFILE}" | egrep -i "\.jpe?g|\.png" | cut -c 31- | sort | head -1)"
 	 unzip "${INFILE}" "${COVER_FILE}" -d "${TMP_DIR}";;
 esac
 
@@ -35,7 +35,7 @@ esac
 if [ -f "${TMP_DIR}/${COVER_FILE}" ]; then
 	ICON_FILE="$(gtk_find_icon application-x-${EXTENSION} ${ICON_SIZE})"
 	echo $ICON_FILE
-	convert "${TMP_DIR}/${COVER_FILE}" -resize "${SIZE}" "${ICON_FILE}" -gravity SouthEast -composite "${OUTFILE}"
+	convert "${TMP_DIR}/${COVER_FILE}" -resize "${SIZE}x${SIZE}" -background none -gravity center -extent "${SIZE}x${SIZE}" "${ICON_FILE}" -gravity SouthEast -composite "${OUTFILE}"
 fi
 
 rm -R "$TMP_DIR"
