@@ -1,3 +1,5 @@
+DESTDIR=/usr/local
+
 all:
 
 install:
