@@ -1,0 +1,16 @@
+Source: comics-thumbnailer
+Maintainer: Livanh <livanh@bulletmail.org>
+Section: gnome
+Priority: optional
+Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 9)
+
+Package: comics-thumbnailer
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, imagemagick, rar, unzip
+Priority: optional
+Section: gnome
+Description: Thumbnailer for comic book (CBR/CBZ) files 
+ This script creates thumbnails for comic book files in PCManFM and other file managers.
+ .
+ The first image inside the archive (in alphabetical order) is assumed to be the cover and used as the thumbnail
