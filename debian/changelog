@@ -1,4 +1,10 @@
-comics-thumbnailer (0.2-1) UNRELEASED; urgency=low
+comics-thumbnailer (0.2-2) testing; urgency=medium
+
+  * Changed email address
+
+ -- Livanh <livanh@protonmail.com>  Sat, 08 Dec 2018 12:40:46 +0100
+
+comics-thumbnailer (0.2-1) testing; urgency=low
 
   * Initial release.
 
